@@ -17,10 +17,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stigmata.grid",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.stigmata.grid",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
