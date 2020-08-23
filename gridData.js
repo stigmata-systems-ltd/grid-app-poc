@@ -1,77 +1,127 @@
-export default gridData = [
-    {
-        lat: 12.992424,
-        lng: 80.151855,
-        title: "Grid-H1V1",
-        description: "Grid Test Desc1",
-        status: "inProgess",
-        rectCords: [
-            {
-                latitude: 12.993762,
-                longitude: 80.148808,
-            },
-            {
-                latitude: 12.994347,
-                longitude: 80.154259,
-            },
-            {
-                latitude: 12.990876,
-                longitude: 80.154731,
-            },
-            {
-                latitude: 12.990375,
-                longitude: 80.150010,
-            }
-        ]
-    },
-    {
-        lat: 12.993260,
-        lng: 80.156318,
-        title: "Grid-H1V2",
-        description: "Grid Test Desc2",
-        status: "inProgess",
-        rectCords: [
-            {
-                latitude: 12.994514,
-                longitude: 80.154387,
-            },
-            {
-                latitude: 12.994849,
-                longitude: 80.157949,
-            },
-            {
-                latitude: 12.991462,
-                longitude: 80.158507,
-            },
-            {
-                latitude: 12.990918,
-                longitude: 80.154945,
-            }
-        ]
-    },
-    {
-        lat: 12.989078,
-        lng: 80.152885,
-        title: "Grid-H1V3",
-        description: "Grid Test Desc2",
-        status: "inProgess",
-        rectCords: [
-            {
-                latitude: 12.990082,
-                longitude: 80.149924,
-            },
-            {
-                latitude: 12.990751,
-                longitude: 80.154774,
-            },
-            {
-                latitude: 12.987824,
-                longitude: 80.155160,
-            },
-            {
-                latitude: 12.986653,
-                longitude: 80.150782,
-            }
-        ]
-    },
-]
+const RECT_DIST = 0.000049;
+const CENTER_DIST = 0.000098;
+getTopLeft = (lat, lng) => {
+    let nLat = lat + RECT_DIST;
+    let nLng = lng - RECT_DIST;
+    return {
+        nLat,
+        nLng
+    }
+}
+getTopRight = (lat, lng) => {
+    let nLat = lat + RECT_DIST;
+    let nLng = lng + RECT_DIST;
+    return {
+        nLat,
+        nLng
+    }
+}
+getBottomRight = (lat, lng) => {
+    let nLat = lat - RECT_DIST;
+    let nLng = lng + RECT_DIST;
+    return {
+        nLat,
+        nLng
+    }
+}
+getBottomLeft = (lat, lng) => {
+    let nLat = lat - RECT_DIST;
+    let nLng = lng - RECT_DIST;
+    return {
+        nLat,
+        nLng
+    }
+}
+getGridCords = (lat, lng) => {
+    const topLeft = getTopLeft(lat, lng);
+    const topRight = getTopRight(lat, lng);
+    const bottomRight = getBottomRight(lat, lng);
+    const bottomLeft = getBottomLeft(lat, lng);
+    return [
+        {
+            latitude: topLeft.nLat,
+            longitude: topLeft.nLng,
+        },
+        {
+            latitude: topRight.nLat,
+            longitude: topRight.nLng,
+        },
+        {
+            latitude: bottomRight.nLat,
+            longitude: bottomRight.nLng,
+        },
+        {
+            latitude: bottomLeft.nLat,
+            longitude: bottomLeft.nLng,
+        }
+    ]
+}
+getCenters = (lat, lng) => {
+    let right = {
+        latitude: lat,
+        longitude: lng + CENTER_DIST,
+    }
+    let top = {
+        latitude: lat + CENTER_DIST,
+        longitude: lng,
+    }
+    let left = {
+        latitude: lat,
+        longitude: lng - CENTER_DIST,
+    }
+    let bottom = {
+        latitude: lat - CENTER_DIST,
+        longitude: lng,
+    }
+    return [
+        right,
+        bottom,
+        left,
+        top
+    ]
+}
+export default gridData = (lat, lng) => {
+    const centers = getCenters(lat, lng);
+    return [
+        {
+            lat: lat,
+            lng: lng,
+            title: "Grid-H1V1",
+            description: "Center Grid",
+            status: "inProgess",
+            rectCords: getGridCords(lat, lng)
+        },
+        {
+            lat: centers[0].latitude,
+            lng: centers[0].longitude,
+            title: "Grid-H1V2",
+            description: "Right Grid",
+            status: "inProgess",
+            rectCords: getGridCords(centers[0].latitude, centers[0].longitude)
+        },
+        {
+            lat: centers[1].latitude,
+            lng: centers[1].longitude,
+            title: "Grid-H1V3",
+            description: "Bottom Grid",
+            status: "inProgess",
+            rectCords: getGridCords(centers[1].latitude, centers[1].longitude)
+        },
+        {
+            lat: centers[2].latitude,
+            lng: centers[2].longitude,
+            title: "Grid-H1V4",
+            description: "Left grid",
+            status: "inProgess",
+            rectCords: getGridCords(centers[2].latitude, centers[2].longitude)
+        },
+        {
+            lat: centers[3].latitude,
+            lng: centers[3].longitude,
+            title: "Grid-H1V5",
+            description: "Top grid",
+            status: "inProgess",
+            rectCords: getGridCords(centers[3].latitude, centers[3].longitude)
+        },
+    ]
+}
