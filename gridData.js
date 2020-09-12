@@ -53,6 +53,10 @@ getGridCords = (lat, lng) => {
         {
             latitude: bottomLeft.nLat,
             longitude: bottomLeft.nLng,
+        },
+        {
+            latitude: topLeft.nLat,
+            longitude: topLeft.nLng,
         }
     ]
 }
